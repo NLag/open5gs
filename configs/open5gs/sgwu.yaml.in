@@ -14,7 +14,8 @@ sgwu:
 #        sgwc:    # SGW-U PFCP Client try to associate SGW-C PFCP Server
 #          - address: 127.0.0.3
     gtpu:
-      - address: 127.0.0.6
+      server:
+        - address: 127.0.0.6
 
 ################################################################################
 # PFCP Server
