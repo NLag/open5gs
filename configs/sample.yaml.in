@@ -59,8 +59,9 @@ mme:
         smf:
           - address: 127.0.0.4
     metrics:
-      address: 127.0.0.2
-      port: 9090
+      server:
+        - address: 127.0.0.2
+          port: 9090
     gummei:
       plmn_id:
         mcc: 999
@@ -111,8 +112,9 @@ smf:
       server:
         - address: 127.0.0.4
     metrics:
-      address: 127.0.0.4
-      port: 9090
+      server:
+        - address: 127.0.0.4
+          port: 9090
     session:
       - subnet: 10.45.0.1/16
       - subnet: 2001:db8:cafe::1/48
@@ -152,8 +154,9 @@ amf:
       server:
         - address: 127.0.0.5
     metrics:
-      address: 127.0.0.5
-      port: 9090
+      server:
+        - address: 127.0.0.5
+          port: 9090
     guami:
       - plmn_id:
           mcc: 999
@@ -198,8 +201,9 @@ upf:
       - subnet: 10.45.0.1/16
       - subnet: 2001:db8:cafe::1/48
     metrics:
-      - address: 127.0.0.7
-        port: 9090
+      server:
+        - address: 127.0.0.7
+          port: 9090
 
 hss:
     freeDiameter:
@@ -287,8 +291,9 @@ pcf:
         scp:
           - uri: http://127.0.1.10:7777
     metrics:
-      - address: 127.0.0.13
-        port: 9090
+      server:
+        - address: 127.0.0.13
+          port: 9090
 
 nssf:
     sbi:

@@ -188,8 +188,9 @@ upf:
       - subnet: 10.45.0.1/16
       - subnet: 2001:db8:cafe::1/48
     metrics:
-      - address: 127.0.0.7
-        port: 9090
+      server:
+        - address: 127.0.0.7
+          port: 9090
 
 hss:
     freeDiameter:
@@ -270,8 +271,9 @@ pcf:
         scp:
           - uri: http://127.0.1.10:7777
     metrics:
-      - address: 127.0.0.13
-        port: 9090
+      server:
+        - address: 127.0.0.13
+          port: 9090
 
 nssf:
     sbi:

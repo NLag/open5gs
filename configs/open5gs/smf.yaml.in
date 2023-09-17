@@ -29,8 +29,9 @@ smf:
       server:
         - address: 127.0.0.4
     metrics:
-      - address: 127.0.0.4
-        port: 9090
+      server:
+        - address: 127.0.0.4
+          port: 9090
     session:
       - subnet: 10.45.0.1/16
       - subnet: 2001:db8:cafe::1/48
