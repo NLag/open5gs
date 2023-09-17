@@ -8,9 +8,11 @@ max:
 
 upf:
     pfcp:
-      - address: 127.0.0.7
-#    smf:     #  UPF PFCP Client try to associate SMF PFCP Server
-#      - address: 127.0.0.4
+      server:
+        - address: 127.0.0.7
+      client:
+#        smf:     #  UPF PFCP Client try to associate SMF PFCP Server
+#          - address: 127.0.0.4
     gtpu:
       - address: 127.0.0.7
     session:

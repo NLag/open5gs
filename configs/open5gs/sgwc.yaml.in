@@ -11,9 +11,11 @@ sgwc:
       server:
         - address: 127.0.0.3
     pfcp:
-      - address: 127.0.0.3
-    sgwu:
-      - address: 127.0.0.6
+      server:
+        - address: 127.0.0.3
+      client:
+        sgwu:
+          - address: 127.0.0.6
 
 ################################################################################
 # GTP-C Server

@@ -15,9 +15,11 @@ smf:
     scp:
       - uri: http://127.0.1.10:7777
     pfcp:
-      - address: 127.0.0.4
-    upf:
-      - address: 127.0.0.7
+      server:
+        - address: 127.0.0.4
+      client:
+        upf:
+          - address: 127.0.0.7
     gtpc:
       server:
         - address: 127.0.0.4
