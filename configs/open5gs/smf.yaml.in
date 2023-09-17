@@ -263,50 +263,59 @@ smf:
 ################################################################################
 #  o Override PFCP address to be advertised to UPF in PFCP association
 #    pfcp:
-#      - dev: eth0
-#        advertise: open5gs-smf.svc.local
+#      server:
+#        - dev: eth0
+#          advertise: open5gs-smf.svc.local
 #
 ################################################################################
 # PFCP Client
 ################################################################################
 #  o UPF selection by eNodeB TAC
 #   (either single TAC or multiple TACs, DECIMAL representation)
-#    upf:
-#      - address: 127.0.0.7
-#        tac: 1
-#      - address: 127.0.0.12
-#        tac: [3,5,8]
+#    pfcp:
+#      client:
+#        upf:
+#          - address: 127.0.0.7
+#            tac: 1
+#          - address: 127.0.0.12
+#            tac: [3,5,8]
 #
 #  o UPF selection by UE's DNN/APN (either single DNN/APN or multiple DNNs/APNs)
-#    upf:
-#      - address: 127.0.0.7
-#        dnn: ims
-#      - address: 127.0.0.12
-#        dnn: [internet, web]
+#    pfcp:
+#      client:
+#        upf:
+#          - address: 127.0.0.7
+#            dnn: ims
+#          - address: 127.0.0.12
+#            dnn: [internet, web]
 #
 #  o UPF selection by CellID(e_cell_id: 28bit, nr_cell_id: 36bit)
 #    (either single enb_id or multiple enb_ids, HEX representation)
-#    upf:
-#      - address: 127.0.0.7
-#        e_cell_id: 463
-#      - address: 127.0.0.12
-#        nr_cell_id: [123456789, 9413]
+#    pfcp:
+#      client:
+#        upf:
+#          - address: 127.0.0.7
+#            e_cell_id: 463
+#          - address: 127.0.0.12
+#            nr_cell_id: [123456789, 9413]
 #
 ################################################################################
 # GTP-C Server
 ################################################################################
 #  o Listen on IPv4 and IPv6
 #    gtpc:
-#      - address: 127.0.0.4
-#      - address: fd69:f21d:873c:fa::3
+#      server:
+#        - address: 127.0.0.4
+#        - address: fd69:f21d:873c:fa::3
 #
 ################################################################################
 # GTP-U Server
 ################################################################################
 #  o Listen on IPv4 and IPv6
 #    gtpu:
-#      - address: 127.0.0.4
-#      - address: ::1
+#      server:
+#        - address: 127.0.0.4
+#        - address: ::1
 #
 ################################################################################
 # 3GPP Specification

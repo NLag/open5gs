@@ -48,13 +48,16 @@ mme:
           address: 127.0.0.8
 
     s1ap:
-      - address: 127.0.0.2
+      server:
+        - address: 127.0.0.2
     gtpc:
-      - address: 127.0.0.2
-    sgwc:
-      - address: 127.0.0.3
-    smf:
-      - address: 127.0.0.4
+      server:
+        - address: 127.0.0.2
+      client:
+        sgwc:
+          - address: 127.0.0.3
+        smf:
+          - address: 127.0.0.4
     gummei:
       plmn_id:
         mcc: 999
@@ -75,24 +78,31 @@ mme:
 
 sgwc:
     gtpc:
-      - address: 127.0.0.3
+      server:
+        - address: 127.0.0.3
     pfcp:
-      - address: 127.0.0.3
-    sgwu:
-      - address: 127.0.0.6
+      server:
+        - address: 127.0.0.3
+      client:
+        sgwu:
+          - address: 127.0.0.6
 
 smf:
 #    sbi:
 #      - address: 127.0.0.4
 #        port: 7777
     pfcp:
-      - address: 127.0.0.4
-    upf:
-      - address: 127.0.0.7
+      server:
+        - address: 127.0.0.4
+      client:
+        upf:
+          - address: 127.0.0.7
     gtpc:
-      - address: 127.0.0.4
+      server:
+        - address: 127.0.0.4
     gtpu:
-      - address: 127.0.0.4
+      server:
+        - address: 127.0.0.4
     session:
       - subnet: 10.45.0.1/16
       - subnet: 2001:db8:cafe::1/48
@@ -155,15 +165,19 @@ amf:
 
 sgwu:
     pfcp:
-      - address: 127.0.0.6
+      server:
+        - address: 127.0.0.6
     gtpu:
-      - address: 127.0.0.6
+      server:
+        - address: 127.0.0.6
 
 upf:
     pfcp:
-      - address: 127.0.0.7
+      server:
+        - address: 127.0.0.7
     gtpu:
-      - address: 127.0.0.7
+      server:
+        - address: 127.0.0.7
     session:
       - subnet: 10.45.0.1/16
       - subnet: 2001:db8:cafe::1/48
