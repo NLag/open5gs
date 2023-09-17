@@ -8,18 +8,20 @@ max:
 
 sepp:
     sbi:
-      - scheme: https
-        address: sepp2.localdomain
-        port: 7777
-        private_key: @sysconfdir@/open5gs/tls/sepp2.key
-        cert: @sysconfdir@/open5gs/tls/sepp2.crt
-#    nrf:
-#      - uri: http://127.0.0.10:7777
-    scp:
-      - uri: http://127.0.2.10:7777
-    sepp:
-        uri: https://sepp1.localdomain:7777
-        cacert: @sysconfdir@/open5gs/tls/ca.crt
+      server:
+        - scheme: https
+          address: sepp2.localdomain
+          port: 7777
+          private_key: @sysconfdir@/open5gs/tls/sepp2.key
+          cert: @sysconfdir@/open5gs/tls/sepp2.crt
+      client:
+#        nrf:
+#          - uri: http://127.0.0.10:7777
+        scp:
+          - uri: http://127.0.1.10:7777
+        sepp:
+            uri: https://sepp1.localdomain:7777
+            cacert: @sysconfdir@/open5gs/tls/ca.crt
 
 ################################################################################
 # SEPP Info

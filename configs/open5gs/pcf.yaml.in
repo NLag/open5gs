@@ -9,12 +9,14 @@ max:
 
 pcf:
     sbi:
-      - address: 127.0.0.13
-        port: 7777
-#    nrf:
-#      - uri: http://127.0.0.10:7777
-    scp:
-      - uri: http://127.0.1.10:7777
+      server:
+        - address: 127.0.0.13
+          port: 7777
+      client:
+#        nrf:
+#          - uri: http://127.0.0.10:7777
+        scp:
+          - uri: http://127.0.1.10:7777
     metrics:
       - address: 127.0.0.13
         port: 9090
