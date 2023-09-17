@@ -19,7 +19,8 @@ smf:
     upf:
       - address: 127.0.0.7
     gtpc:
-      - address: 127.0.0.4
+      server:
+        - address: 127.0.0.4
     gtpu:
       - address: 127.0.0.4
     metrics:
