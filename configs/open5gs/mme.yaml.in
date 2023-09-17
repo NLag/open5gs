@@ -123,41 +123,42 @@ time:
 ################################################################################
 #  o MSC/VLR
 #    sgsap:
-#      - address: 127.0.0.2
-#        map:
-#          tai:
-#            plmn_id:
-#              mcc: 001
-#              mnc: 01
-#            tac: 4131
-#          lai:
-#            plmn_id:
-#              mcc: 001
-#              mnc: 01
-#            lac: 43691
-#        map:
-#          tai:
-#            plmn_id:
-#              mcc: 002
-#              mnc: 02
-#            tac: 4132
-#          lai:
-#            plmn_id:
-#              mcc: 002
-#              mnc: 02
-#            lac: 43692
-#      - address: msc.open5gs.org
-#        map:
-#          tai:
-#            plmn_id:
-#              mcc: 001
-#              mnc: 01
-#            tac: 4133
-#          lai:
-#            plmn_id:
-#              mcc: 002
-#              mnc: 02
-#            lac: 43693
+#      server:
+#        - address: 127.0.0.2
+#          map:
+#            tai:
+#              plmn_id:
+#                mcc: 001
+#                mnc: 01
+#              tac: 4131
+#            lai:
+#              plmn_id:
+#                mcc: 001
+#                mnc: 01
+#              lac: 43691
+#          map:
+#            tai:
+#              plmn_id:
+#                mcc: 002
+#                mnc: 02
+#              tac: 4132
+#            lai:
+#              plmn_id:
+#                mcc: 002
+#                mnc: 02
+#              lac: 43692
+#        - address: msc.open5gs.org
+#          map:
+#            tai:
+#              plmn_id:
+#                mcc: 001
+#                mnc: 01
+#              tac: 4133
+#            lai:
+#              plmn_id:
+#                mcc: 002
+#                mnc: 02
+#              lac: 43693
 #
 ################################################################################
 # 3GPP Specification
