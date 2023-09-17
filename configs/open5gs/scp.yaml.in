@@ -65,14 +65,25 @@ scp:
 ################################################################################
 #  o Override SBI address to be advertised to NRF
 #    sbi:
-#      - dev: eth0
-#        advertise: open5gs-scp.svc.local
+#      server:
+#        - dev: eth0
+#          advertise: open5gs-scp.svc.local
 #
 #    sbi:
-#      - address: localhost
-#        advertise:
-#          - 127.0.0.99
-#          - ::1
+#      server:
+#        - address: localhost
+#          advertise:
+#            - 127.0.0.99
+#            - ::1
+#
+################################################################################
+# SBI Client
+################################################################################
+#  o Direct communication with NRF interaction
+#    sbi:
+#      client:
+#        nrf:
+#          - uri: http://127.0.0.10:7777
 #
 ################################################################################
 # HTTPS scheme with TLS

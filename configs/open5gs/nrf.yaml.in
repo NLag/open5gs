@@ -21,14 +21,16 @@ nrf:
 ################################################################################
 #  o Override SBI address to be advertised to NRF
 #    sbi:
-#      - dev: eth0
-#        advertise: open5gs-nrf.svc.local
+#      server:
+#        - dev: eth0
+#          advertise: open5gs-nrf.svc.local
 #
 #    sbi:
-#      - address: localhost
-#        advertise:
-#          - 127.0.0.99
-#          - ::1
+#      server:
+#        - address: localhost
+#          advertise:
+#            - 127.0.0.99
+#            - ::1
 #
 ################################################################################
 # HTTPS scheme with TLS

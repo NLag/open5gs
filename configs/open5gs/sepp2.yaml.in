@@ -40,44 +40,55 @@ sepp:
 ################################################################################
 #  o n32-c should use HTTPS scheme with FQDN(hostname)
 #    sbi:
-#      - scheme: https
-#        address: sepp2.localdomain
-#        port: 7777
-#        private_key: @sysconfdir@/open5gs/tls/sepp2.key
-#        cert: @sysconfdir@/open5gs/tls/sepp2.crt
+#      server:
+#        - scheme: https
+#          address: sepp2.localdomain
+#          port: 7777
+#          private_key: @sysconfdir@/open5gs/tls/sepp2.key
+#          cert: @sysconfdir@/open5gs/tls/sepp2.crt
 #
 #  o Override SBI address to be advertised to NRF
 #    sbi:
-#      - dev: eth0
-#        advertise: open5gs-sepp2.svc.local
+#      server:
+#        - dev: eth0
+#          advertise: open5gs-sepp2.svc.local
 #
 #    sbi:
-#      - address: localhost
-#        advertise:
-#          - 127.0.0.99
-#          - ::1
+#      server:
+#        - address: localhost
+#          advertise:
+#            - 127.0.0.99
+#            - ::1
 #
 ################################################################################
 # SBI Client
 ################################################################################
 #  o n32-c inteface should use HTTPS scheme with FQDN
-#    sepp:
-#        uri: https://sepp2.localdomain:7777
-#        cacert: @sysconfdir@/open5gs/tls/ca.crt
+#    sbi:
+#      client:
+#        sepp:
+#            uri: https://sepp2.localdomain:7777
+#            cacert: @sysconfdir@/open5gs/tls/ca.crt
 #
 #  o Direct communication with NRF interaction
-#    nrf:
-#      - uri: http://127.0.0.10:7777
+#    sbi:
+#      client:
+#        nrf:
+#          - uri: http://127.0.0.10:7777
 #
 #  o Indirect communication with delegated discovery
-#    scp:
-#      - uri: http://127.0.1.10:7777
+#    sbi:
+#      client:
+#        scp:
+#          - uri: http://127.0.1.10:7777
 #
 #  o Indirect communication without delegated discovery
-#    nrf:
-#      - uri: http://127.0.0.10:7777
-#    scp:
-#      - uri: http://127.0.1.10:7777
+#    sbi:
+#      client:
+#        nrf:
+#          - uri: http://127.0.0.10:7777
+#        scp:
+#          - uri: http://127.0.1.10:7777
 #    discovery:
 #      delegated: no
 #
