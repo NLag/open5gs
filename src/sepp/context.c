@@ -189,7 +189,6 @@ int sepp_context_parse_config(void)
                 if (!strcmp(sepp_key, "defconfig")) {
                     /* handle config in sbi library */
                 } else if (!strcmp(sepp_key, "sbi")) {
-                    /* handle config in sbi library */
                     ogs_yaml_iter_t sbi_iter;
                     ogs_yaml_iter_recurse(&sepp_iter, &sbi_iter);
                     while (ogs_yaml_iter_next(&sbi_iter)) {
