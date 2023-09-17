@@ -92,10 +92,12 @@ sgwc:
 
 smf:
     sbi:
-      - address: 127.0.0.4
-        port: 7777
-    scp:
-      - uri: http://127.0.1.10:7777
+      server:
+        - address: 127.0.0.4
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.1.10:7777
     pfcp:
       server:
         - address: 127.0.0.4
@@ -140,12 +142,15 @@ smf:
 
 amf:
     sbi:
-      - address: 127.0.0.5
-        port: 7777
-    scp:
-      - uri: http://127.0.1.10:7777
+      server:
+        - address: 127.0.0.5
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.1.10:7777
     ngap:
-      - address: 127.0.0.5
+      server:
+        - address: 127.0.0.5
     metrics:
       address: 127.0.0.5
       port: 9090
@@ -235,22 +240,27 @@ pcrf:
 
 nrf:
     sbi:
-      - address: 127.0.0.10
-        port: 7777
+      server:
+        - address: 127.0.0.10
+          port: 7777
 
 scp:
     sbi:
-      - address: 127.0.1.10
-        port: 7777
-    nrf:
-      - uri: http://127.0.0.10:7777
+      server:
+        - address: 127.0.1.10
+          port: 7777
+      client:
+        nrf:
+          - uri: http://127.0.0.10:7777
 
 ausf:
     sbi:
-      - address: 127.0.0.11
-        port: 7777
-    scp:
-      - uri: http://127.0.1.10:7777
+      server:
+        - address: 127.0.0.11
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.1.10:7777
 
 udm:
     hnet:
@@ -261,44 +271,54 @@ udm:
         scheme: 2
         key: @build_configs_dir@/open5gs/hnet/secp256r1-2.key
     sbi:
-      - address: 127.0.0.12
-        port: 7777
-    scp:
-      - uri: http://127.0.1.10:7777
+      server:
+        - address: 127.0.0.12
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.1.10:7777
 
 pcf:
     sbi:
-      - address: 127.0.0.13
-        port: 7777
+      server:
+        - address: 127.0.0.13
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.1.10:7777
     metrics:
       - address: 127.0.0.13
         port: 9090
-    scp:
-      - uri: http://127.0.1.10:7777
 
 nssf:
     sbi:
-      - address: 127.0.0.14
-        port: 7777
-    scp:
-      - uri: http://127.0.1.10:7777
+      server:
+        - address: 127.0.0.14
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.1.10:7777
     nsi:
       - uri: http://127.0.0.10:7777
         s_nssai:
           sst: 1
 bsf:
     sbi:
-      - address: 127.0.0.15
-        port: 7777
-    scp:
-      - uri: http://127.0.1.10:7777
+      server:
+        - address: 127.0.0.15
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.1.10:7777
 
 udr:
     sbi:
-      - address: 127.0.0.20
-        port: 7777
-    scp:
-      - uri: http://127.0.1.10:7777
+      server:
+        - address: 127.0.0.20
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.1.10:7777
 
 time:
   t3512:

@@ -89,8 +89,9 @@ sgwc:
 
 smf:
 #    sbi:
-#      - address: 127.0.0.4
-#        port: 7777
+#      server:
+#        - address: 127.0.0.4
+#          port: 7777
     pfcp:
       server:
         - address: 127.0.0.4
@@ -134,10 +135,12 @@ smf:
           address: 127.0.0.9
 amf:
     sbi:
-      - address: 127.0.0.5
-        port: 7777
+      server:
+        - address: 127.0.0.5
+          port: 7777
     ngap:
-      - address: 127.0.0.5
+      server:
+        - address: 127.0.0.5
     guami:
       - plmn_id:
           mcc: 999
@@ -228,26 +231,30 @@ pcrf:
 
 ausf:
     sbi:
-      - address: 127.0.0.11
-        port: 7777
+      server:
+        - address: 127.0.0.11
+          port: 7777
 
 udm:
     sbi:
-      - address: 127.0.0.12
-        port: 7777
+      server:
+        - address: 127.0.0.12
+          port: 7777
 
 pcf:
     sbi:
-      - address: 127.0.0.13
-        port: 7777
+      server:
+        - address: 127.0.0.13
+          port: 7777
     metrics:
       - address: 127.0.0.13
         port: 9090
 
 nssf:
     sbi:
-      - address: 127.0.0.14
-        port: 7777
+      server:
+        - address: 127.0.0.14
+          port: 7777
     nsi:
       - uri: http://127.0.0.10:7777
         s_nssai:
@@ -255,13 +262,15 @@ nssf:
 
 bsf:
     sbi:
-      - address: 127.0.0.15
-        port: 7777
+      server:
+        - address: 127.0.0.15
+          port: 7777
 
 udr:
     sbi:
-      - address: 127.0.0.20
-        port: 7777
+      server:
+        - address: 127.0.0.20
+          port: 7777
 
 time:
   t3512:
