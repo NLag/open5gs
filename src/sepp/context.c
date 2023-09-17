@@ -190,6 +190,220 @@ int sepp_context_parse_config(void)
                     /* handle config in sbi library */
                 } else if (!strcmp(sepp_key, "sbi")) {
                     /* handle config in sbi library */
+                    ogs_yaml_iter_t sbi_iter;
+                    ogs_yaml_iter_recurse(&sepp_iter, &sbi_iter);
+                    while (ogs_yaml_iter_next(&sbi_iter)) {
+                        const char *sbi_key = ogs_yaml_iter_key(&sbi_iter);
+                        ogs_assert(sbi_key);
+                        if (!strcmp(sbi_key, "server")) {
+                        } else if (!strcmp(sbi_key, "client")) {
+                            ogs_yaml_iter_t client_iter;
+                            ogs_yaml_iter_recurse(&sbi_iter, &client_iter);
+                            while (ogs_yaml_iter_next(&client_iter)) {
+                                const char *client_key =
+                                    ogs_yaml_iter_key(&client_iter);
+                                ogs_assert(client_key);
+                                if (!strcmp(client_key, "sepp")) {
+                                    ogs_yaml_iter_t peer_array, peer_iter;
+                                    ogs_yaml_iter_recurse(
+                                            &client_iter, &peer_array);
+                                    do {
+                                        sepp_node_t *sepp_node = NULL;
+                                        ogs_sbi_client_t *client = NULL;
+
+                                        const char *uri = NULL;
+
+                                        bool insecure_skip_verify = false;
+                                        const char *cacert = NULL;
+
+                                        const char *client_private_key = NULL;
+                                        const char *client_cert = NULL;
+
+                                        const char *mnc = NULL, *mcc = NULL;
+
+                                        if (ogs_yaml_iter_type(&peer_array) ==
+                                                YAML_MAPPING_NODE) {
+                                            memcpy(&peer_iter, &peer_array,
+                                                    sizeof(ogs_yaml_iter_t));
+                                        } else if (ogs_yaml_iter_type(
+                                                    &peer_array) ==
+                                                YAML_SEQUENCE_NODE) {
+                                            if (!ogs_yaml_iter_next(
+                                                        &peer_array))
+                                                break;
+                                            ogs_yaml_iter_recurse(
+                                                    &peer_array, &peer_iter);
+                                        } else if (ogs_yaml_iter_type(
+                                                    &peer_array) ==
+                                                YAML_SCALAR_NODE) {
+                                            break;
+                                        } else
+                                            ogs_assert_if_reached();
+
+                                        while (ogs_yaml_iter_next(&peer_iter)) {
+                                            const char *peer_key =
+                                                ogs_yaml_iter_key(&peer_iter);
+                                            ogs_assert(peer_key);
+                                            if (!strcmp(peer_key, "uri")) {
+                                                uri = ogs_yaml_iter_value(
+                                                        &peer_iter);
+                                            } else if (!strcmp(peer_key,
+                                                    "insecure_skip_verify")) {
+                                                insecure_skip_verify =
+                                                    ogs_yaml_iter_bool(
+                                                            &peer_iter);
+                                            } else if (!strcmp(peer_key,
+                                                        "cacert")) {
+                                                cacert = ogs_yaml_iter_value(
+                                                        &peer_iter);
+                                            } else if (!strcmp(peer_key,
+                                                        "client_private_key")) {
+                                                client_private_key =
+                                                    ogs_yaml_iter_value(
+                                                            &peer_iter);
+                                            } else if (!strcmp(peer_key,
+                                                        "client_cert")) {
+                                                client_cert =
+                                                    ogs_yaml_iter_value(
+                                                            &peer_iter);
+                                            } else if (!strcmp(peer_key,
+                                                        "target_plmn_id")) {
+                                                ogs_yaml_iter_t plmn_id_iter;
+
+                                                ogs_yaml_iter_recurse(
+                                                        &peer_iter,
+                                                        &plmn_id_iter);
+                                                while (ogs_yaml_iter_next(
+                                                            &plmn_id_iter)) {
+                                                    const char *plmn_id_key =
+                                                        ogs_yaml_iter_key(
+                                                                &plmn_id_iter);
+                                                    ogs_assert(plmn_id_key);
+                                                    if (!strcmp(plmn_id_key,
+                                                                "mcc")) {
+                                                        mcc =
+                                                            ogs_yaml_iter_value(
+                                                                &plmn_id_iter);
+                                                    } else if (!strcmp(
+                                                                plmn_id_key,
+                                                                "mnc")) {
+                                                        mnc =
+                                                            ogs_yaml_iter_value(
+                                                                &plmn_id_iter);
+                                                    }
+                                                }
+                                            } else
+                                                ogs_warn("unknown key `%s`",
+                                                        peer_key);
+                                        }
+
+                                        if (uri) {
+                                            bool rc;
+                                            OpenAPI_uri_scheme_e scheme =
+                                                OpenAPI_uri_scheme_NULL;
+                                            char *fqdn = NULL;
+                                            uint16_t fqdn_port = 0;
+                                            ogs_sockaddr_t *addr = NULL;
+                                            ogs_sockaddr_t *addr6 = NULL;
+
+                                            rc = ogs_sbi_getaddr_from_uri(
+                                                    &scheme, &fqdn, &fqdn_port,
+                                                    &addr, &addr6, (char *)uri);
+                                            if (rc == false) {
+                                                if (!scheme)
+                                                    ogs_error("Invalid Scheme "
+                                                            "in URI[%s]", uri);
+                                                else
+                                                    ogs_error("Invalid URI[%s]",
+                                                            uri);
+
+                                                return OGS_ERROR;
+                                            }
+                                            if (!fqdn) {
+                                                ogs_error("No FQDN in URI[%s]",
+                                                        uri);
+                                                ogs_freeaddrinfo(addr);
+                                                ogs_freeaddrinfo(addr6);
+                                                return OGS_ERROR;
+                                            }
+
+                                            sepp_node = sepp_node_add(
+                                                    (char *)fqdn);
+                                            ogs_assert(sepp_node);
+
+                                            client = ogs_sbi_client_add(
+                                                    scheme, fqdn, fqdn_port,
+                                                    NULL, NULL);
+                                            ogs_assert(client);
+                                            OGS_SBI_SETUP_CLIENT(
+                                                    sepp_node, client);
+
+                                            if (insecure_skip_verify == true)
+                                                client->insecure_skip_verify =
+                                                    true;
+
+                                            if (cacert) {
+                                                if (client->cacert)
+                                                    ogs_free(client->cacert);
+                                                client->cacert =
+                                                    ogs_strdup(cacert);
+                                                ogs_assert(client->cacert);
+                                            }
+
+                                            if (client_private_key) {
+                                                if (client->private_key)
+                                                    ogs_free(client->
+                                                            private_key);
+                                                client->private_key =
+                                                    ogs_strdup(
+                                                            client_private_key);
+                                                ogs_assert(client->private_key);
+                                            }
+
+                                            if (client_cert) {
+                                                if (client->cert)
+                                                    ogs_free(client->cert);
+                                                client->cert = ogs_strdup(
+                                                        client_cert);
+                                                ogs_assert(client->cert);
+                                            }
+
+                                            if ((!client_private_key &&
+                                                        client_cert) ||
+                                                (client_private_key &&
+                                                 !client_cert)) {
+                                                ogs_error("Either the private "
+                                                    "key or certificate is "
+                                                    "missing.");
+                                                return OGS_ERROR;
+                                            }
+
+
+                                            if (mcc && mnc) {
+                                                ogs_plmn_id_build(
+                                                    &sepp_node->target_plmn_id,
+                                                    atoi(mcc), atoi(mnc),
+                                                    strlen(mnc));
+                                                sepp_node->
+                                                    target_plmn_id_presence =
+                                                    true;
+                                            }
+
+                                            ogs_free(fqdn);
+                                            ogs_freeaddrinfo(addr);
+                                            ogs_freeaddrinfo(addr6);
+                                        } else {
+                                            ogs_error("Invalid Mandatory "
+                                                    "[URI:%s]",
+                                                    uri ? uri : "NULL");
+                                        }
+                                    } while (ogs_yaml_iter_type(&peer_array) ==
+                                            YAML_SEQUENCE_NODE);
+                                }
+                            }
+                        } else
+                            ogs_warn("unknown key `%s`", sbi_key);
+                    }
                 } else if (!strcmp(sepp_key, "nrf")) {
                     /* handle config in sbi library */
                 } else if (!strcmp(sepp_key, "scp")) {
@@ -198,160 +412,6 @@ int sepp_context_parse_config(void)
                     /* handle config in sbi library */
                 } else if (!strcmp(sepp_key, "discovery")) {
                     /* handle config in sbi library */
-                } else if (!strcmp(sepp_key, "sepp")) {
-                    ogs_yaml_iter_t peer_array, peer_iter;
-                    ogs_yaml_iter_recurse(&sepp_iter, &peer_array);
-                    do {
-                        sepp_node_t *sepp_node = NULL;
-                        ogs_sbi_client_t *client = NULL;
-
-                        const char *uri = NULL;
-
-                        bool insecure_skip_verify = false;
-                        const char *cacert = NULL;
-
-                        const char *client_private_key = NULL;
-                        const char *client_cert = NULL;
-
-                        const char *mnc = NULL, *mcc = NULL;
-
-                        if (ogs_yaml_iter_type(&peer_array) ==
-                                YAML_MAPPING_NODE) {
-                            memcpy(&peer_iter, &peer_array,
-                                    sizeof(ogs_yaml_iter_t));
-                        } else if (ogs_yaml_iter_type(&peer_array) ==
-                            YAML_SEQUENCE_NODE) {
-                            if (!ogs_yaml_iter_next(&peer_array))
-                                break;
-                            ogs_yaml_iter_recurse(&peer_array, &peer_iter);
-                        } else if (ogs_yaml_iter_type(&peer_array) ==
-                                YAML_SCALAR_NODE) {
-                            break;
-                        } else
-                            ogs_assert_if_reached();
-
-                        while (ogs_yaml_iter_next(&peer_iter)) {
-                            const char *peer_key =
-                                ogs_yaml_iter_key(&peer_iter);
-                            ogs_assert(peer_key);
-                            if (!strcmp(peer_key, "uri")) {
-                                uri = ogs_yaml_iter_value(&peer_iter);
-                            } else if (!strcmp(peer_key,
-                                        "insecure_skip_verify")) {
-                                insecure_skip_verify =
-                                    ogs_yaml_iter_bool(&peer_iter);
-                            } else if (!strcmp(peer_key, "cacert")) {
-                                cacert = ogs_yaml_iter_value(&peer_iter);
-                            } else if (!strcmp(peer_key,
-                                        "client_private_key")) {
-                                client_private_key =
-                                    ogs_yaml_iter_value(&peer_iter);
-                            } else if (!strcmp(peer_key, "client_cert")) {
-                                client_cert = ogs_yaml_iter_value(&peer_iter);
-                            } else if (!strcmp(peer_key, "target_plmn_id")) {
-                                ogs_yaml_iter_t plmn_id_iter;
-
-                                ogs_yaml_iter_recurse(&peer_iter,
-                                        &plmn_id_iter);
-                                while (ogs_yaml_iter_next(&plmn_id_iter)) {
-                                    const char *plmn_id_key =
-                                        ogs_yaml_iter_key(&plmn_id_iter);
-                                    ogs_assert(plmn_id_key);
-                                    if (!strcmp(plmn_id_key, "mcc")) {
-                                        mcc = ogs_yaml_iter_value(
-                                                &plmn_id_iter);
-                                    } else if (!strcmp(plmn_id_key, "mnc")) {
-                                        mnc = ogs_yaml_iter_value(
-                                                &plmn_id_iter);
-                                    }
-                                }
-                            } else
-                                ogs_warn("unknown key `%s`", peer_key);
-                        }
-
-                        if (uri) {
-                            bool rc;
-                            OpenAPI_uri_scheme_e scheme =
-                                OpenAPI_uri_scheme_NULL;
-                            char *fqdn = NULL;
-                            uint16_t fqdn_port = 0;
-                            ogs_sockaddr_t *addr = NULL, *addr6 = NULL;
-
-                            rc = ogs_sbi_getaddr_from_uri(
-                                    &scheme, &fqdn, &fqdn_port, &addr, &addr6,
-                                    (char *)uri);
-                            if (rc == false) {
-                                if (!scheme)
-                                    ogs_error("Invalid Scheme in URI[%s]", uri);
-                                else
-                                    ogs_error("Invalid URI[%s]", uri);
-
-                                return OGS_ERROR;
-                            }
-                            if (!fqdn) {
-                                ogs_error("No FQDN in URI[%s]", uri);
-                                ogs_freeaddrinfo(addr);
-                                ogs_freeaddrinfo(addr6);
-                                return OGS_ERROR;
-                            }
-
-                            sepp_node = sepp_node_add((char *)fqdn);
-                            ogs_assert(sepp_node);
-
-                            client = ogs_sbi_client_add(
-                                    scheme, fqdn, fqdn_port, NULL, NULL);
-                            ogs_assert(client);
-                            OGS_SBI_SETUP_CLIENT(sepp_node, client);
-
-                            if (insecure_skip_verify == true)
-                                client->insecure_skip_verify = true;
-
-                            if (cacert) {
-                                if (client->cacert)
-                                    ogs_free(client->cacert);
-                                client->cacert = ogs_strdup(cacert);
-                                ogs_assert(client->cacert);
-                            }
-
-                            if (client_private_key) {
-                                if (client->private_key)
-                                    ogs_free(client->private_key);
-                                client->private_key =
-                                    ogs_strdup(client_private_key);
-                                ogs_assert(client->private_key);
-                            }
-
-                            if (client_cert) {
-                                if (client->cert)
-                                    ogs_free(client->cert);
-                                client->cert = ogs_strdup(client_cert);
-                                ogs_assert(client->cert);
-                            }
-
-                            if ((!client_private_key && client_cert) ||
-                                (client_private_key && !client_cert)) {
-                                ogs_error("Either the private key or "
-                                        "certificate is missing.");
-                                return OGS_ERROR;
-                            }
-
-
-                            if (mcc && mnc) {
-                                ogs_plmn_id_build(
-                                    &sepp_node->target_plmn_id,
-                                    atoi(mcc), atoi(mnc), strlen(mnc));
-                                sepp_node->target_plmn_id_presence = true;
-                            }
-
-                            ogs_free(fqdn);
-                            ogs_freeaddrinfo(addr);
-                            ogs_freeaddrinfo(addr6);
-                        } else {
-                            ogs_error("Invalid Mandatory [URI:%s]",
-                                        uri ? uri : "NULL");
-                        }
-                    } while (ogs_yaml_iter_type(&peer_array) ==
-                            YAML_SEQUENCE_NODE);
                 } else if (!strcmp(sepp_key, "info")) {
                     ogs_sbi_nf_instance_t *nf_instance = NULL;
                     ogs_sbi_nf_info_t *nf_info = NULL;

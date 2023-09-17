@@ -42,13 +42,16 @@ mme:
           address: 127.0.3.8
 
     s1ap:
-      - address: 127.0.3.2
+      server:
+        - address: 127.0.3.2
     gtpc:
-      - address: 127.0.3.2
-    sgwc:
-      - address: 127.0.0.3
-    smf:
-      - address: 127.0.0.4
+      server:
+        - address: 127.0.3.2
+      client:
+        sgwc:
+          - address: 127.0.0.3
+        smf:
+          - address: 127.0.0.4
     metrics:
       address: 127.0.3.2
       port: 9090
@@ -72,26 +75,32 @@ mme:
 
 sgwc:
     gtpc:
-      - address: 127.0.3.3
+      server:
+        - address: 127.0.3.3
     pfcp:
-      - address: 127.0.3.3
-    sgwu:
-      - address: 127.0.0.6
-    upf:
-      - address: 127.0.0.7
+      server:
+        - address: 127.0.3.3
+      client:
+        sgwu:
+          - address: 127.0.0.6
 
 smf:
     sbi:
-      - address: 127.0.3.4
-        port: 7777
-    scp:
-      - uri: http://127.0.2.10:7777
+      server:
+        - address: 127.0.3.4
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
     pfcp:
-      - address: 127.0.3.4
+      server:
+        - address: 127.0.3.4
     gtpc:
-      - address: 127.0.3.4
+      server:
+        - address: 127.0.3.4
     gtpu:
-      - address: 127.0.3.4
+      server:
+        - address: 127.0.3.4
     metrics:
       address: 127.0.3.4
       port: 9090
@@ -124,12 +133,15 @@ smf:
 
 amf:
     sbi:
-      - address: 127.0.3.5
-        port: 7777
-    scp:
-      - uri: http://127.0.2.10:7777
+      server:
+        - address: 127.0.3.5
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
     ngap:
-      - address: 127.0.3.5
+      server:
+        - address: 127.0.3.5
     metrics:
       address: 127.0.3.5
       port: 9090
@@ -160,15 +172,19 @@ amf:
 
 sgwu:
     pfcp:
-      - address: 127.0.3.6
+      server:
+        - address: 127.0.3.6
     gtpu:
-      - address: 127.0.3.6
+      server:
+        - address: 127.0.3.6
 
 upf:
     pfcp:
-      - address: 127.0.3.7
+      server:
+        - address: 127.0.3.7
     gtpu:
-      - address: 127.0.3.7
+      server:
+        - address: 127.0.3.7
     session:
       - subnet: 10.45.0.1/16
       - subnet: 2001:db8:cafe::1/48
@@ -219,37 +235,44 @@ nrf:
           mcc: 001
           mnc: 01
     sbi:
-#      - address: 127.0.3.10
-#        port: 7777
-      - address: nrf.5gc.mnc001.mcc001.3gppnetwork.org
+      server:
+#        - address: 127.0.3.10
+#          port: 7777
+        - address: nrf.5gc.mnc001.mcc001.3gppnetwork.org
 
 scp:
     sbi:
-      - address: 127.0.2.10
-        port: 7777
-    nrf:
-      - uri: http://nrf.5gc.mnc001.mcc001.3gppnetwork.org
+      server:
+        - address: 127.0.2.10
+          port: 7777
+      client:
+        nrf:
+          - uri: http://nrf.5gc.mnc001.mcc001.3gppnetwork.org
 
 sepp:
     sbi:
-      - scheme: https
-        address: sepp2.localdomain
-        port: 7777
-        private_key: @build_configs_dir@/open5gs/tls/sepp2.key
-        cert: @build_configs_dir@/open5gs/tls/sepp2.crt
-    scp:
-      - uri: http://127.0.2.10:7777
-    sepp:
-      - uri: https://sepp1.localdomain:7777
-        cacert: @build_configs_dir@/open5gs/tls/ca.crt
+      server:
+        - scheme: https
+          address: sepp2.localdomain
+          port: 7777
+          private_key: @build_configs_dir@/open5gs/tls/sepp2.key
+          cert: @build_configs_dir@/open5gs/tls/sepp2.crt
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
+        sepp:
+          - uri: https://sepp1.localdomain:7777
+            cacert: @build_configs_dir@/open5gs/tls/ca.crt
 
 ausf:
     sbi:
-#      - address: 127.0.3.11
-#        port: 7777
-      - address: ausf.5gc.mnc001.mcc001.3gppnetwork.org
-    scp:
-      - uri: http://127.0.2.10:7777
+      server:
+#        - address: 127.0.3.11
+#          port: 7777
+        - address: ausf.5gc.mnc001.mcc001.3gppnetwork.org
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
 
 udm:
     hnet:
@@ -260,45 +283,55 @@ udm:
         scheme: 2
         key: @build_configs_dir@/open5gs/hnet/secp256r1-2.key
     sbi:
-#      - address: 127.0.3.12
-#        port: 7777
-      - address: udm.5gc.mnc001.mcc001.3gppnetwork.org
-    scp:
-      - uri: http://127.0.2.10:7777
+      server:
+#        - address: 127.0.3.12
+#          port: 7777
+        - address: udm.5gc.mnc001.mcc001.3gppnetwork.org
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
 
 pcf:
     sbi:
-      - address: 127.0.3.13
-        port: 7777
-    scp:
-      - uri: http://127.0.2.10:7777
+      server:
+        - address: 127.0.3.13
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
     metrics:
       - address: 127.0.3.13
         port: 9090
 
 nssf:
     sbi:
-      - address: 127.0.3.14
-        port: 7777
-    scp:
-      - uri: http://127.0.2.10:7777
+      server:
+        - address: 127.0.3.14
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
     nsi:
       - uri: http://127.0.3.10:7777
         s_nssai:
           sst: 1
 bsf:
     sbi:
-      - address: 127.0.3.15
-        port: 7777
-    scp:
-      - uri: http://127.0.2.10:7777
+      server:
+        - address: 127.0.3.15
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
 
 udr:
     sbi:
-      - address: 127.0.3.20
-        port: 7777
-    scp:
-      - uri: http://127.0.2.10:7777
+      server:
+        - address: 127.0.3.20
+          port: 7777
+      client:
+        scp:
+          - uri: http://127.0.2.10:7777
 
 time:
   t3512:

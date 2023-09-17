@@ -1021,8 +1021,7 @@ int ogs_sbi_context_parse_config(
                                         }
                                     } while (ogs_yaml_iter_type(&scp_array) ==
                                             YAML_SEQUENCE_NODE);
-                                } else
-                                    ogs_warn("unknown key `%s`", client_key);
+                                }
                             }
                         } else
                             ogs_warn("unknown key `%s`", sbi_key);
