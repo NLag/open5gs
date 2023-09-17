@@ -276,18 +276,18 @@ nssf:
       client:
         nrf:
           - uri: http://127.0.0.10:7777
-    nsi:
-      - uri: http://127.0.0.10:7777
-        s_nssai:
-          sst: 1
-      - uri: http://127.0.0.19:7777
-        s_nssai:
-          sst: 1
-          sd: 000080
-      - uri: http://127.0.0.10:7777
-        s_nssai:
-          sst: 1
-          sd: 009000
+        nsi:
+          - uri: http://127.0.0.10:7777
+            s_nssai:
+              sst: 1
+          - uri: http://127.0.0.19:7777
+            s_nssai:
+              sst: 1
+              sd: 000080
+          - uri: http://127.0.0.10:7777
+            s_nssai:
+              sst: 1
+              sd: 009000
 
 bsf:
     sbi:

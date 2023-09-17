@@ -276,10 +276,10 @@ nssf:
       client:
         nrf:
           - uri: http://127.0.0.10:7777
-    nsi:
-      - uri: http://127.0.0.10:7777
-        s_nssai:
-          sst: 1
+        nsi:
+          - uri: http://127.0.0.10:7777
+            s_nssai:
+              sst: 1
 bsf:
     sbi:
       server:
